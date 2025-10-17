@@ -1,0 +1,5 @@
+cfg/*
+graph_sets/*
+!cfg/example.json
+!graph_sets/test_set
+!graph_sets/tuning_set

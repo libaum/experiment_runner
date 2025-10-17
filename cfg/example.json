@@ -1,0 +1,105 @@
+/// Example configuration file (this file works as it is right now, comments are possible in here)
+
+{
+    "configurations": [
+        {
+            "algo": "BuffCut",          /// This is the program to be executed, it is assumed that this is located in ~/deploy/<algo>
+            "params": {                 /// Fixed parameters that do not change
+                "buffer_size": "131072"
+            },
+            "hyperparams": {            /// Hyperparameters names that should be evaluated
+                "batch_size": "",       /// "<parameter_in_program>": "<prefix_in_resulting_algoname>"  prefix can also be empty
+                "b_score": "bScore"
+            },
+            "to_run": [                 /// Specify here hyperparameter combinations that should be run in the order defined above in "hyperparams"
+                "16384 haa",            /// corresponds to "<batch_size> <b_score>"
+                "16384 anr",
+                "16384 cbs",
+                "16384 cms",
+                "16384 nss"
+            ],
+            "max_cores": 16             /// GNU Parallel is ran with this amount of jobs in parallel
+        },
+
+
+
+        //// Just for a reference, this are the configurations used in the SOTA experiments
+        {   /// Cuttana (fixBestScore fixes the buffer score bug)
+            "algo": "cuttana",
+            "params": {
+                "b": 1.03,
+                "fixDegZero": "",
+                // "fixBestScore": "",
+                "ifstream": ""
+            },
+            "hyperparams": {
+                "subp": "subp",
+                "dmax": ""
+            },
+            "to_run": [
+                "16 1000",
+                "4096 1000"
+            ],
+            "max_cores": 5
+        },
+
+        { /// HeiStream
+            "algo": "heistream",
+            "params": {},
+            "hyperparams": {
+                "stream_buffer": ""
+            },
+            "to_run": [
+                // "32768",
+                "524288",
+                "1048576",
+            ],
+            "max_cores": 5
+        },
+
+        { /// BuffCut
+            "algo": "buffcut",
+            "params": {
+            },
+            "hyperparams": {
+                "stream_buffer": "",
+                "max_pq_size": "mbs"
+            },
+            "to_run": [
+                "65536 1000000"
+            ],
+            "max_cores": 5
+        }
+    ],
+    "orderings": {                      /// Define here for which sets the experiments are run and for which orderings
+        "natural": {
+            "tuning_set"        : true,
+            "test_set"          : false,
+        },
+        "random": {
+            "tuning_set"        : true,
+            "test_set"          : false,
+        },
+        "random2": {
+            "tuning_set"        : false,
+            "test_set"          : false,
+        },
+        "random3": {
+            "tuning_set"        : false,
+            "test_set"          : false,
+        }
+    }
+}
+
+
+/// ------------------------------------------------------------------------------------------
+/// The resulting experiments ran defined by the first configuration in this file are:
+///     for ordering in ["natural", "random"]:
+///         for graph in tuning_set:
+///             ~/deploy/BuffCut --buffer_size=131072 --batch_size=16384 --b_score=haa
+///             ~/deploy/BuffCut --buffer_size=131072 --batch_size=16384 --b_score=anr
+///             ~/deploy/BuffCut --buffer_size=131072 --batch_size=16384 --b_score=cbs
+///             ~/deploy/BuffCut --buffer_size=131072 --batch_size=16384 --b_score=cms
+///             ~/deploy/BuffCut --buffer_size=131072 --batch_size=16384 --b_score=nss
+///
+/// ------------------------------------------------------------------------------------------
