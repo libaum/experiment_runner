@@ -62,8 +62,8 @@
             "params": {
             },
             "hyperparams": {
-                "stream_buffer": "",
-                "max_pq_size": "mbs"
+                "batch_size": "",
+                "buffer_size": "mbs"
             },
             "to_run": [
                 "65536 1000000"
